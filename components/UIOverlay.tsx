@@ -30,7 +30,7 @@ export const UIOverlay: React.FC<UIOverlayProps> = ({
       // Soft fade in delay
       const timer = setTimeout(() => {
         setTitleVisible(true);
-      }, 800); 
+      }, 500); 
       return () => clearTimeout(timer);
     }
   }, [status]);
@@ -63,45 +63,39 @@ export const UIOverlay: React.FC<UIOverlayProps> = ({
 
       {/* Start Screen */}
       {status === GameStatus.START_SCREEN && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-auto overflow-hidden bg-[#1e1b4b]">
+        <div className="absolute inset-0 pointer-events-auto overflow-hidden">
           {/* Background Image */}
-          {/* Attempts to load local 'cover.jpg'. Falls back to a similar Unsplash image if missing. */}
           <img 
-            src="./cover.jpg" 
-            onError={(e) => {
-              e.currentTarget.src = "https://images.unsplash.com/photo-1517544845501-16ea2f6700b9?q=80&w=2600&auto=format&fit=crop"; // Fallback watercolor mountains
-            }}
+            src="https://raw.githubusercontent.com/sauah666/Chemin/7de0ea9bf1514d5a19365e1e682c710eed9393d0/main.png" 
             alt="Chemin Background"
             className="absolute inset-0 w-full h-full object-cover z-0 opacity-100"
           />
           
-          {/* Vignette/Overlay for text readability */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/10 z-0"></div>
+          {/* Invisible Click Zone (The Sun) 
+              Positioned centrally near the top. Adjust top/left percentages if image alignment differs.
+          */}
+          <div 
+            onClick={onStart}
+            className="absolute top-[10%] left-1/2 -translate-x-1/2 w-64 h-64 rounded-full z-50 cursor-pointer hover:scale-105 active:scale-95 transition-transform duration-300"
+            title="Start Game"
+            style={{ 
+                /* Transparent hit box */
+                backgroundColor: 'rgba(0,0,0,0)', 
+            }}
+          />
           
-          <div className="relative z-10 flex flex-col items-center text-center mt-[-5%]">
-            <h1 
-              className={`text-9xl text-[#1e3a8a] mb-8 drop-shadow-md transition-opacity duration-[3000ms] ease-in-out ${titleVisible ? 'opacity-90' : 'opacity-0'}`}
-              style={{ fontFamily: 'Kaushan Script, cursive', textShadow: '2px 2px 4px rgba(255,255,255,0.4)' }}
-            >
-              Chemin
-            </h1>
-
-            {/* Buttons fade in later */}
-            <div className={`transition-opacity duration-[2000ms] delay-[2500ms] ${titleVisible ? 'opacity-100' : 'opacity-0'}`}>
-                <button
-                onClick={onStart}
-                className="group relative px-12 py-3 bg-white/30 backdrop-blur-md border-2 border-white/70 text-white font-bold text-2xl rounded-full hover:bg-white/50 transition-all duration-300 transform hover:scale-105 shadow-xl"
-                >
-                <span className="relative z-10 drop-shadow-sm text-[#1e3a8a]">НАЧАТЬ</span>
-                </button>
-            </div>
+          {/* Fading Inscription */}
+          <div className={`absolute w-full top-[45%] text-center transition-opacity duration-[3000ms] ease-in-out ${titleVisible ? 'opacity-100' : 'opacity-0'}`}>
+             <p 
+                className="text-4xl text-[#1e3a8a] font-script"
+                style={{ 
+                    textShadow: '0px 0px 15px rgba(255, 255, 255, 0.9), 1px 1px 2px rgba(0,0,0,0.2)' 
+                }}
+             >
+                прикоснись к солнцу чтобы начать
+             </p>
           </div>
           
-           {/* Controls hint at bottom */}
-           <div className={`absolute bottom-8 text-white/70 text-sm font-semibold flex gap-8 drop-shadow-md transition-opacity duration-[2000ms] delay-[3000ms] ${titleVisible ? 'opacity-100' : 'opacity-0'}`}>
-                <span>A / D — ИДТИ</span>
-                <span>SPACE — ПРЫГАТЬ</span>
-            </div>
         </div>
       )}
 

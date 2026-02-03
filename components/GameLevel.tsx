@@ -32,7 +32,7 @@ interface SceneryObject {
 
 export const GameLevel: React.FC<GameLevelProps> = ({ status, onPause, onWin }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const requestRef = useRef<number>();
+  const requestRef = useRef<number>(0);
   
   const gameState = useRef({
     gameTime: 0, 
